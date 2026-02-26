@@ -1,0 +1,111 @@
+﻿<Window x:Class="WpfJordy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfJordy"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="0,0,0,-521">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="Beige">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" Source="/images/logo.png" Height="80" Margin="20"/>
+            <TextBlock Grid.Column="1" Text="red Jordy" FontSize="26" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Grid.Column="2" Content="LOGIN" Margin="30,12,10,103" Padding="10,5" BorderThickness="0" Background="LightGray"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <WrapPanel HorizontalAlignment="Center" Margin="20">
+                    <Border Width="160" Height="120" Margin="5">
+                        <Image Source="/images/jordy1.jpg" Stretch="UniformToFill"/>
+                    </Border>
+
+                    <Border Width="160" Height="120" Margin="5">
+                        <Image Source="/images/jordy2.jpg" Stretch="UniformToFill"/>
+                    </Border>
+
+                    <Border Width="160" Height="120" Margin="5">
+                        <Image Source="/images/jordy3.jpg" Stretch="UniformToFill"/>
+                    </Border>
+
+                    <Border Width="160" Height="120" Margin="5">
+                        <Image Source="/images/jordy4.jpg" Stretch="UniformToFill"/>
+                    </Border>
+
+                </WrapPanel>
+
+                <Grid Margin="20" MaxWidth="1000">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Margin="0,0,20,0">
+                        
+                        <Bold>Naam:</Bold> Jordy
+                        <LineBreak/>
+                        <Bold>Leeftijd:</Bold> 6 maanden<LineBreak/>
+                        <Bold>Geslacht:</Bold> mannetje <LineBreak/>
+                        <Bold>Gewicht:</Bold> 12kg
+                    </TextBlock>
+
+                    <TextBlock Grid.Column="1" TextWrapping="Wrap" LineHeight="20">
+                         Hallo, ik ben Jordy! Ik hou van wandelen, kinderen en andere huisdieren.
+                        Ad veertien er al slaagden resident. Waardoor eindelijk schatkist mee
+                        men wat britschen visschers. Is om te markten streken en vrouwen.
+                    </TextBlock>
+                </Grid>
+
+                <TextBlock Text="Wordt Jordy jouw nieuw maatje? stuur maar hem een berciht!" HorizontalAlignment="Center" FontStyle="Italic" Margin="0,20,0,20"/>
+                <StackPanel MaxWidth="500" HorizontalAlignment="Center" Margin="20">
+
+                    <Label Content="Naam:"/>
+                    <TextBox Height="30" BorderBrush="LightBlue" Width="419"/>
+
+                    <Label Content="Straat:" Margin="0,10,0,0"/>
+                    <TextBox Height="30" BorderBrush="LightBlue"/>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <Label Content=" Postcode:"/>
+                            <TextBox Height="30" BorderBrush="LightBlue"/>
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <Label Content="Gemeente:"/>
+                            <TextBox Height="30" BorderBrush="LightBlue"/>
+                        </StackPanel>
+                    </Grid>
+                    <Label Content="Bericht" Margin="0,10,0,0"/>
+                    <TextBox Height="120" BorderBrush="LightBlue" AcceptsReturn="True" TextWrapping="Wrap"/>
+                    <Button Content="VERZENDEN" Width="120" HorizontalAlignment="Right" Margin="0,20,0,0" BorderThickness="0" Background="LightGray"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="2" Background="Beige" Text="copyright 2024, verbond van dakloze dieren" HorizontalAlignment="Center" VerticalAlignment="Center"
+ FontSize="10" Foreground="Gray"/>
+
+
+    </Grid>
+</Window>
