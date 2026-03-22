@@ -1,0 +1,38 @@
+﻿<Window x:Class="WpfVcardEditor.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfVcardEditor"
+        mc:Ignorable="d"
+        Title="About vCard Editor" Height="300" Width="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+    
+    <StackPanel Margin="20">
+        <Image Source="/logo_odisee.png" Height="80" Margin="0,0,0,20"/>
+        
+        <TextBlock Margin="0,0,0,5" >
+            <Run FontWeight="Bold" Text="Gemaakt door: "/>
+            <Run Text="David Sarwar Ghauri"/>
+        </TextBlock>
+
+        <TextBlock Margin="0,0,0,5">
+            <Run FontWeight="Bold" Text="Vak: "/>
+            <Run Text="OO Application Development"/>
+        </TextBlock>
+
+        <TextBlock Margin="0,0,0,20">
+            <Run FontWeight="Bold" Text="Acedemiejaar: "/>
+            <Run Text="2025 - 2026"/>
+        </TextBlock>
+
+        <Button x:Name="btnSluiten"
+                Content="SLUITEN"
+                HorizontalAlignment="Center"
+                Padding="20,5"
+                Click="btnSluiten_Click"/>
+    </StackPanel>
+        
+   
+</Window>
