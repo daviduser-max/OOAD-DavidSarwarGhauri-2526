@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>OOAD static &amp; Enum oefenblad</title>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400&display=swap">
+   <link rel="stylesheet" href="vendor/prism-default.css">
+   <link rel="stylesheet" href="vendor/prism-okaida.css">
+   <link rel="stylesheet" href="css/styles.css">
+   <link rel="stylesheet" href="css/mods.css">
+</head>
+
+<body class="prism language-csharp">
+
+   <header class="page-header" aria-label="Paginakop">
+      <h1>Static &amp; Enum oefenblad</h1>
+      <p>
+         Dit is een oefenblad bij het hoofdstuk
+         <a href="https://rogiervdl.github.io/CS-course/11_static_enum.html">Static &amp; Enum</a>.
+      </p>
+   </header>
+
+   <main>
+      <section class="intro box" aria-label="Inleiding">
+         <h2>Hoe los je dit oefenblad op?</h2>
+         <ol>
+            <li>Open de solution van dit oefenblad in <strong>Visual Studio 2026</strong>.</li>
+            <li>Alle oefeningen vind je in de map <em>Exercises</em>.</li>
+            <li>Maak de gevraagde klassen en enums aan in <em>Exercises/Classes</em> resp. <em>Exercises/Enums</em>.</li>
+            <li>Haal de testcode uit commentaar om je implementatie te testen.</li>
+            <li>Controleer of de output klopt met de screenshot.</li>
+         </ol>
+         <p>Overzicht van de oefeningen:</p>
+         <ol>
+            <li><a href="#ex1">Deelnemers registreren</a></li>
+            <li><a href="#ex2">Couponcodes controleren</a></li>
+            <li><a href="#ex3">Tekst analyseren</a></li>
+            <li><a href="#ex4">Bestelstatus</a></li>
+            <li><a href="#ex5">Enum conversies</a></li>
+         </ol>
+      </section>
+
+      <!-- Oefening 1: Deelnemers registreren -->
+      <section class="exercise" id="ex1">
+         <h2>Statische properties</h2>
+         <p class="goal">Doel: statische properties maken die moeten geïmplementeerd worden in afgeleide klassen.</p>
+
+         <div class="info box">
+            <h3>Theorie</h3>
+            <p>
+               Een <strong>statische property</strong> hoort bij de <em>klasse</em>, niet bij een instantie. Ze wordt gedeeld over alle objecten en aangesproken via de klassenaam.
+            </p>
+            <pre class="code-block"><code>public class Teller
+{
+   public static int AantalAangemaakt { get; private set; }
+   public string Naam { get; set; }
+
+   public Teller(string naam)
+   {
+      Naam = naam;
+      AantalAangemaakt++; // verhoog de gemeenschappelijke teller
+   }
+}
+
+Teller t1 = new Teller("Alice");
+Teller t2 = new Teller("Bob");
+Console.WriteLine(Teller.AantalAangemaakt); // 2 — via klassenaam 'Teller'</code></pre>
+         </div>
+         <div class="assignment box">
+            <h3>Opgave</h3>
+            <p>
+               Gegeven is de klasse <code>WorkshopDeelnemer</code> in <em>Exercises/Classes</em> met properties
+               <code>Naam</code> en <code>IsAanwezig</code> (private setters) en een constructor met parameters voor naam en aanwezigheidsstatus.
+            </p>
+            <ol>
+               <li>
+                  Voeg twee static properties toe:
+                  <ul>
+                     <li><code>AantalAangemaakt</code> (private setter)</li>
+                     <li><code>AantalAanwezig</code> (private setter)</li>
+                  </ul>
+               </li>
+               <li>Pas de constructor aan zodat beide statische properties correct bijgehouden worden bij elke aanmaak.</li>
+               <li>
+                  Voeg een instantiemethode <code>ZetAfwezig()</code> toe die de aanwezigheidsstatus aanpast
+                  <em>en</em> <code>AantalAanwezig</code> correct bijhoudt.
+                  Let op: als een deelnemer al afwezig is, mag het teller niet nog eens verlaagd worden.
+               </li>
+            </ol>
+            <p>Verwacht resultaat:</p>
+            <pre class="prism-okaida language-none"><code>Oefening 1: deelnemers registreren
+-------------
+Aantal aangemaakt: 3
+Aantal aanwezig: 2
+Aantal aanwezig na wijziging: 1</code></pre>
+         </div>
+      </section>
+
+      <!-- Oefening 2: Couponcodes controleren -->
+      <section class="exercise" id="ex2">
+         <h2>Statische methodes</h2>
+         <p class="goal">Doel: statische methodes gebruiken.</p>
+
+         <div class="info box">
+            <h3>Theorie</h3>
+            <p>
+               Een <strong>statische methode</strong> roep je aan via de klassenaam, zonder een object aan te maken. Ze heeft enkel toegang tot statische properties, niet object properties.
+            </p>
+            <pre class="code-block"><code>public class Validator
+{
+   // static methode: aanroepen via Validator.IsGeldigEmail(...)
+   public static bool IsGeldigEmail(string email)
+   {
+      return email.Contains("@") &amp;&amp; email.Contains(".");
+   }
+}
+
+bool ok = Validator.IsGeldigEmail("test@mail.be"); // methode opgeroepen rechtstreeks vanop de klasse</code></pre>
+            <p>
+               Met <code>Regex.IsMatch()</code> controleer je een string tegen een <strong>reguliere expressie</strong> (patroon). Enkele veelgebruikte symbolen:
+            </p>
+            <pre class="code-block"><code>// [A-Z]   → één hoofdletter
+// \d      → één cijfer
+// {3}     → exact 3 keer
+// ^...$   → match volledig (begin tot einde)
+
+string patroon = @"^[A-Z]{3}\d{2}$"; // bv. "ABC12"
+bool geldig = Regex.IsMatch("ABC12", patroon); // true
+bool ongeldig = Regex.IsMatch("ab12", patroon); // false</code></pre>
+         </div>
+         <div class="assignment box">
+            <h3>Opgave</h3>
+            <ol>
+               <li>
+                  Maak in <em>Exercises/Classes</em> een klasse <code>CouponCode</code>:
+                  <ul>
+                     <li>Private static veld: <code>_couponRegex = @"^[A-Z]{3}\d{2}-[A-Z]{2}$"</code></li>
+                     <li>Property <code>Code</code> (string)</li>
+                     <li>Berekende property <code>IsGeldig</code> (bool, alleen getter): gebruik <code>Regex.IsMatch()</code> om te controleren of <code>Code</code> aan het patroon voldoet</li>
+                     <li>Constructor met één parameter</li>
+                  </ul>
+               </li>
+               <li>Voeg een static methode <code>ControleerCode(string code)</code> toe die true of false teruggeeft.</li>
+               <li>
+                  Voeg een static methode <code>Beschrijf(string code)</code> toe:
+                  <ul>
+                     <li>Als de code geldig is: <code>"Prefix=ABC, Nummer=12, Regio=DE"</code></li>
+                     <li>Als de code ongeldig is: <code>"ongeldige code"</code></li>
+                  </ul>
+               </li>
+            </ol>
+            <p>Voorbeeldcodes om te testen: <code>ABC12-DE</code> (geldig), <code>AB12-DE</code> (ongeldig), <code>XYZ99-BE</code> (geldig).</p>
+            <p>Verwacht resultaat:</p>
+            <pre class="prism-okaida language-none"><code>Oefening 2: couponcodes controleren
+-------------
+
+testen IsGeldig() methode:
+
+Code ABC12-DE is geldig
+Code AB12-DE is ongeldig
+Code XYZ99-BE is geldig
+
+testen Beschrijf() methode:
+
+Code ABC12-DE: Prefix=ABC, Nummer=12, Regio=DE
+Code AB12-DE: ongeldige code
+Code XYZ99-BE: Prefix=XYZ, Nummer=99, Regio=BE</code></pre>
+         </div>
+      </section>
+
+      <!-- Oefening 3: Tekst analyseren -->
+      <section class="exercise" id="ex3">
+         <h2>Statische klassen</h2>
+         <p class="goal">Doel: statische klasse met alleen static members gebruiken.</p>
+
+         <div class="info box">
+            <h3>Theorie</h3>
+            <p>
+               Een <strong>statische klasse</strong> bevat alleen statische methodes en properties. Je kan er geen objecten uit maken (en er zijn dus bijgevolg ook geen constructors). Ze dienen vooral als een verzameling hulpmethodes en properties (utility class).
+            </p>
+            <pre class="code-block"><code>// static klasse
+public static class MathHelper
+{
+   public static int Kwadraat(int n) => n * n;
+   public static bool IsPositief(int n) => n > 0;
+}
+
+Console.WriteLine(MathHelper.Kwadraat(4)); // 16
+MathHelper mh = new MathHelper(); // fout! kan geen objecten maken uit een statische klasse</code></pre>
+         </div>
+         <div class="assignment box">
+            <h3>Opgave</h3>
+            <ol>
+               <li>
+                  Maak in <em>Exercises/Classes</em> een <strong>statische klasse</strong> <code>TekstAnalyse</code> met:
+                  <ul>
+                     <li>Privaat static veld <code>verbodenWoorden</code>: array met <code>"delete"</code>, <code>"drop"</code>, <code>"truncate"</code></li>
+                     <li>Privaat static veld <code>verbodenKarakters</code>: array met <code>'!'</code>, <code>'@'</code>, <code>'#'</code>, <code>'$'</code>, <code>'%'</code></li>
+                  </ul>
+               </li>
+               <li>
+                  Voeg deze static methodes toe:
+                  <ul>
+                     <li><code>AantalWoorden(string tekst)</code>: telt woorden op basis van spaties</li>
+                     <li><code>BevatVerbodenWoord(string tekst)</code>: geeft <code>true</code> als de tekst een verboden woord bevat</li>
+                     <li><code>BevatVerbodenKarakter(string tekst)</code>: geeft <code>true</code> als de tekst een verboden karakter bevat</li>
+                     <li>
+                        <code>IsGeschiktVoorTitel(string tekst)</code>: geeft <code>true</code> als:
+                        <ul>
+                           <li>de tekst niet leeg is</li>
+                           <li>de tekst minimaal 5 en maximaal 30 tekens lang is</li>
+                           <li>de tekst geen verboden woorden of karakters bevat</li>
+                        </ul>
+                     </li>
+                  </ul>
+               </li>
+               <li>Zorg dat alle methodes null- en lege-string-veilig zijn.</li>
+            </ol>
+            <p>Verwacht resultaat:</p>
+            <pre class="prism-okaida language-none"><code>Oefening 3: tekst analyseren
+-------------
+
+'dit is een test':
+ - bevat 4 woorden
+ - is geschikt voor een titel
+'gratis truncate aanbieding':
+ - bevat 3 woorden
+ - bevat verboden woord
+ - is niet geschikt voor een titel
+'Workshop C# basis':
+ - bevat 3 woorden
+ - bevat verboden karakter
+ - is niet geschikt voor een titel
+'delete titel':
+ - bevat 2 woorden
+ - bevat verboden woord
+ - is niet geschikt voor een titel
+'':
+ - bevat 0 woorden
+ - is niet geschikt voor een titel</code></pre>
+         </div>
+      </section>
+
+      <!-- Oefening 4: Bestelstatus -->
+      <section class="exercise" id="ex4">
+         <h2>Bestelstatus</h2>
+         <p class="goal">Doel: een enum definiëren en gebruiken als type van een property.</p>
+
+         <div class="info box">
+            <h3>Theorie</h3>
+            <p>
+               Een <strong>enum</strong> is een type met een vaste set benoemde waarden. Het maakt code leesbaarder dan losse getallen of strings.
+            </p>
+            <pre class="code-block"><code>public enum SeizoenType
+{
+   Lente,
+   Zomer,
+   Herfst,
+   Winter
+}</code></pre>
+            <p>Je gebruikt een enum zoals elk ander gegevenstype, b.v. voor een property in een klasse:</p>
+            <pre class="code-block"><code>public class Activiteit
+{
+   public string Naam { get; set; }
+   public SeizoenType BesteSeizoen { get; set; }
+}
+
+Activiteit a = new Activiteit { Naam = "Zwemmen", BesteSeizoen = SeizoenType.Zomer };
+
+if (a.BesteSeizoen == SeizoenType.Zomer)
+{
+   Console.WriteLine("Ideaal in de zomer!");
+}</code></pre>
+         </div>
+         <div class="assignment box">
+            <h3>Opgave</h3>
+            <ol>
+               <li>
+                  Maak in <em>Exercises/Enums</em> een enum <code>BestelStatus</code> met de waarden:
+                  <code>Nieuw</code>, <code>InBehandeling</code>, <code>Verzonden</code>, <code>Geleverd</code>, <code>Geannuleerd</code>.
+               </li>
+               <li>
+                  Maak in <em>Exercises/Classes</em> een klasse <code>Bestelling</code> met properties:
+                  <code>KlantNaam</code>, <code>ProductNaam</code> en <code>Status</code> (van type <code>BestelStatus</code>).
+               </li>
+               <li>
+                  Voeg een berekende property <code>KanNogGewijzigdWorden</code> toe die <code>true</code> geeft zolang de bestelling nog wijzigbaar is
+                  (niet <code>Geleverd</code> of <code>Geannuleerd</code>).
+               </li>
+               <li>Voeg een <code>override ToString()</code> toe die klantnaam, productnaam en status netjes weergeeft.</li>
+            </ol>
+            <p>Verwacht resultaat:</p>
+            <pre class="prism-okaida language-none"><code>Oefening 4: bestelstatus
+-------------
+Laptop - Nieuw - wijzigbaar: ja
+Muis - Verzonden - wijzigbaar: nee</code></pre>
+         </div>
+      </section>
+
+      <!-- Oefening 5: Enum conversies -->
+      <section class="exercise" id="ex5">
+         <h2>Enum conversies</h2>
+         <p class="goal">Doel: een enum omzetten naar <code>int</code> en omgekeerd.</p>
+
+         <div class="info box">
+            <h3>Theorie</h3>
+            <p>
+               Elke enum-waarde heeft intern een <code>int</code>-waarde (standaard 0, 1, 2, …). Je kan heen en weer casten:
+            </p>
+            <pre class="code-block"><code>public enum SeizoenType { Lente, Zomer, Herfst, Winter } // Lente = 0, Zomer = 1...
+SeizoenType s = SeizoenType.Herfst; // 2
+
+int getal = (int)s;                // enum → int: 2
+SeizoenType s2 = (SeizoenType)3;   // int → enum: Winter
+string tekst = s.ToString();       // enum → string: "Herfst"
+SeizoenType volgend = s + 1;       // rekenkundige operatie op enum: Winter</code></pre>
+         </div>
+         <div class="assignment box">
+            <h3>Opgave</h3>
+            <ol>
+               <li>
+                  Maak in <em>Exercises/Enums</em> een enum <code>Prioriteit</code> met de waarden:
+                  <code>Laag</code>, <code>Normaal</code>, <code>Hoog</code>, <code>Kritiek</code>.
+               </li>
+               <li>Test de volgende conversies:
+                  <ul>
+                     <li>Een enumwaarde tonen als tekst (bv. <code>"Hoog"</code>).</li>
+                     <li>Dezelfde enumwaarde omzetten naar <code>int</code>.</li>
+                     <li>De prioriteit met 1 ophogen via rekenkundige operatie (<code>p1 + 1</code>) en het resultaat tonen.</li>
+                  </ul>
+               </li>
+            </ol>
+            <p>Verwacht resultaat:</p>
+            <pre class="prism-okaida language-none"><code>Oefening 5: enum conversies
+-------------
+Enumwaarde: Hoog
+Als int: 2
+Nog hogere prioriteit: Kritiek</code></pre>
+         </div>
+      </section>
+
+   </main>
+
+   <footer class="page-footer" aria-label="Paginavoet">
+      <p>OOAD static &amp; enum oefenblad.</p>
+   </footer>
+
+   <script src="vendor/prism.js"></script>
+</body>
+
+</html>
