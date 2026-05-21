@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DokterspraktijkLib;
 
 namespace WPFPatiënt
 {
@@ -20,5 +21,30 @@ namespace WPFPatiënt
         {
             InitializeComponent();
         }
+
+        private void BtnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            string email = txtEmail.Text.Trim();
+            string wachtwoord = pwdWachtwoord.Password;
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(wachtwoord))
+            {
+                lblFoutmelding.Text = "Gelieve alle velden in te vullen.";
+                return;
+            }
+
+            Patient ingelogdePatient = PatientService.ValideerInloggen(email, wachtwoord);
+            if (ingelogdePatient != null)
+            {
+                lblFoutmelding.Text = "";
+                MessageBox.Show($"Welkom terug, {ingelogdePatient.Voornaam} {ingelogdePatient.Achternaam}!", "Inloggen Geslgaagd", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                lblFoutmelding.Text = "Ongelidge e-mailadres of wachtwoord";
+            }
+
+        }
+     }
+
     }
-}

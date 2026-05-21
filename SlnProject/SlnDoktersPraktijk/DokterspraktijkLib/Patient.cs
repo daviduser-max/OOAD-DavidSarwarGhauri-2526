@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace DokterspraktijkLib
 {
-    internal class Patient
+    public enum NotificatieType 
     {
-        public enum NotificatieType { Geen, Mail, Sms, Biede}
+        Geen,
+        Mail,
+        Sms,
+        Beide
+    }
 
-        public class Patient : Gebruiker 
-        {
-            public NotificatieType Notificatie {  get; set; }
+    public class Patient : Gebruiker 
+    {
+    public NotificatieType Notificatie { get; set; }
+
+        public Patient() {
+            
         }
+    
     }
 }

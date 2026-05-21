@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DokterspraktijkLib
 {
-    internal class Gebruiker
+     public class Gebruiker
     {
         public int Id { get; set; }
         public string Voornaam { get; set; }
         public string Achternaam { get; set; }
-
+       
         public string Email {  get; set; }
 
         public string Passwoord { get; set; }

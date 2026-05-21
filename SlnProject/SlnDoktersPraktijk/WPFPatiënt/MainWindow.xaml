@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPatiënt"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="400">
+    <Grid >
+        <StackPanel VerticalAlignment ="Center" HorizontalAlignment="Center" Width="300">
+            <TextBlock Text="Mijn Portaal" FontSize="26" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock Text=" Log in om u afspraak te beheren" FontSize="12" Foreground="#7F8C8D" HorizontalAlignment="Center" Margin="0,0,0,30"/>
 
+            <TextBlock Text="Email adres" FontWeight="SemiBold"  Foreground="#34495E" Margin="0,0,0,5"/>
+            <TextBox x:Name="txtEmail" Padding="8" Margin="0,0,0,15" FontSize="14"/>
+
+            <TextBlock Text="Wachtwoord" FontWeight="SemiBold" Foreground="#34495E" Margin="0,0,0,5"/>
+            <PasswordBox x:Name="pwdWachtwoord" Padding="8" Margin="0,0,0,25" FontSize="14"/>
+
+            <Button x:Name ="btnLogin" Content="Inloggen" Background="#3498DB" Foreground="White" FontWeight="Bold" FontSize="16" Padding="10" Click="BtnLogin_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <TextBlock x:Name="lblFoutmelding" Foreground="#E74C3C" HorizontalAlignment="Center" Margin="0,15,0,0" TextWrapping="Wrap" FontWeight="SemiBold"/>
+        </StackPanel>
     </Grid>
 </Window>
