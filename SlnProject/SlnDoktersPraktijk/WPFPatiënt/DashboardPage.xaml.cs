@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using DokterspraktijkLib;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPFPatiënt
 {
-    /// <summary>
-    /// Interaction logic for DashboardPage.xaml
-    /// </summary>
     public partial class DashboardPage : Page
     {
-        public DashboardPage()
+        private Patient patient;
+
+        public DashboardPage(Patient ingelogdePatient)
         {
             InitializeComponent();
+
+            patient = ingelogdePatient;
+
+            txtNaam.Text = patient.VolledigeNaam;
+            txtEmail.Text = patient.Email;
+            txtGsm.Text = patient.Gsm;
         }
     }
 }

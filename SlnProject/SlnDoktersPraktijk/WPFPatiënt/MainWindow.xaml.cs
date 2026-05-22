@@ -33,11 +33,12 @@ namespace WPFPatiënt
                 return;
             }
 
-            Patient ingelogdePatient = PatientService.ValideerInloggen(email, wachtwoord);
+            Patient ingelogdePatient = Patient.ValideerInloggen(email, wachtwoord);
             if (ingelogdePatient != null)
             {
                 lblFoutmelding.Text = "";
-                MessageBox.Show($"Welkom terug, {ingelogdePatient.Voornaam} {ingelogdePatient.Achternaam}!", "Inloggen Geslgaagd", MessageBoxButton.OK, MessageBoxImage.Information);
+                DashboardPage dashboard = new DashboardPage(ingelogdePatient);
+                this.Content = dashboard;
             }
             else
             {
@@ -45,6 +46,5 @@ namespace WPFPatiënt
             }
 
         }
-     }
-
     }
+}

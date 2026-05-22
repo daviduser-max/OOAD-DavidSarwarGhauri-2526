@@ -1,14 +1,62 @@
 ﻿<Page x:Class="WPFPatiënt.DashboardPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WPFPatiënt"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="450"
+      d:DesignWidth="800"
       Title="DashboardPage">
 
-    <Grid>
-        
+    <Grid Background="#F5F7FA">
+
+        <Border Background="White"
+                CornerRadius="12"
+                Padding="30"
+                Margin="40">
+
+            <StackPanel>
+
+                <TextBlock Text="Mijn Dashboard"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#1F3B5B"
+                           Margin="0,0,0,30"/>
+
+                <TextBlock Text="Naam"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+
+                <TextBlock x:Name="txtNaam"
+                           FontSize="18"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="Email"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+
+                <TextBlock x:Name="txtEmail"
+                           FontSize="18"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="GSM"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+
+                <TextBlock x:Name="txtGsm"
+                           FontSize="18"
+                           Margin="0,0,0,30"/>
+
+                <Button Content="Uitloggen"
+                        Width="150"
+                        Height="40"
+                        Background="#3498DB"
+                        Foreground="White"
+                        FontWeight="Bold"/>
+
+            </StackPanel>
+
+        </Border>
+
     </Grid>
 </Page>

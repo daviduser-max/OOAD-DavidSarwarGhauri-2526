@@ -5,15 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DokterspraktijkLib
 {
-    internal class Database
+    public static class Database
     {
-        private static string connectionString = @"Server=(localdb)\mssqllocaldb;DataBase=DokterspraktijkDB:Trusted_Connection=True;";
+        private static string connectionString =
+        @"Server=(localdb)\MSSQLLocalDB;Database=DokterspraktijkDB;Trusted_Connection=True;";
 
-        public static SqlConnection GetConnection()
-        {
-            return new SqlConnection(connectionString);
-        }
+        public static SqlConnection GetConnection() {  return new SqlConnection(connectionString); }
     }
 }

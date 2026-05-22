@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Afspraak.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Dokter.cs" />
     <Compile Include="Gebruiker.cs" />
     <Compile Include="Patient.cs" />
-    <Compile Include="PatientService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

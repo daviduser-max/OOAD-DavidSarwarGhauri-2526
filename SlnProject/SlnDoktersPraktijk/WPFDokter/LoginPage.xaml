@@ -1,0 +1,53 @@
+<Page x:Class="WPFDokter.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Login">
+
+    <Grid Background="#F5F7FA">
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="320">
+            <TextBlock Text="Inloggen"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#2C3E50"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,25"/>
+
+            <TextBlock Text="E-mailadres"
+                       FontWeight="SemiBold"
+                       Foreground="#34495E"
+                       Margin="0,0,0,5"/>
+            <TextBox x:Name="txtEmail"
+                     Padding="8"
+                     Margin="0,0,0,15"
+                     FontSize="14"
+                     Text="alexandre@dokterspraktijk.be"/>
+
+            <TextBlock Text="Wachtwoord"
+                       FontWeight="SemiBold"
+                       Foreground="#34495E"
+                       Margin="0,0,0,5"/>
+            <PasswordBox x:Name="pwdWachtwoord"
+                         Padding="8"
+                         Margin="0,0,0,20"
+                         FontSize="14"/>
+
+            <Button x:Name="btnInloggen"
+                    Content="Inloggen"
+                    Background="#3498DB"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="16"
+                    Padding="10"
+                    Click="BtnInloggen_Click"/>
+
+            <TextBlock x:Name="lblFoutmelding"
+                       Foreground="#E74C3C"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       Margin="0,15,0,0"
+                       FontWeight="SemiBold"/>
+        </StackPanel>
+    </Grid>
+</Page>
