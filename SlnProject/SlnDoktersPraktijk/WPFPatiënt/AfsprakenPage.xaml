@@ -1,0 +1,224 @@
+<Page x:Class="WPFPatiënt.AfsprakenPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="850"
+      Title="Mijn Afspraken">
+
+    <Grid Background="#F5F7FA">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 1. OVERZICHT PANEL -->
+            <Grid x:Name="pnlOverzicht" Grid.Row="0" Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Linker kolom: Lijst en Filters -->
+                <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="20" Margin="0,0,12,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Geplande Afspraken" FontSize="18" FontWeight="Bold" Foreground="#1F3B5B" Margin="0,0,0,15"/>
+
+                        <!-- Filters -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+                            <RadioButton x:Name="radToekomstig" Content="Toekomstige afspraken" IsChecked="True" FontSize="13" Margin="0,0,20,0" Checked="RadFilter_Changed"/>
+                            <RadioButton x:Name="radAlle" Content="Alle afspraken" FontSize="13" Checked="RadFilter_Changed"/>
+                        </StackPanel>
+
+                        <!-- Lijst van afspraken -->
+                        <ListBox Grid.Row="2" x:Name="lstAfspraken" FontSize="14" BorderThickness="1" BorderBrush="#CBD5E1" SelectionChanged="LstAfspraken_SelectionChanged">
+                            <ListBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </ListBox.Resources>
+                        </ListBox>
+
+                        <Button Grid.Row="3" x:Name="btnNieuweAfspraakPagina" Content="+ Nieuwe Afspraak Boeken" Margin="0,15,0,0" Padding="15,10" Background="#3498DB" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Click="BtnNieuweAfspraakPagina_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- Rechter kolom: Afspraak Details -->
+                <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="20" Margin="12,0,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Afspraak Details" FontSize="18" FontWeight="Bold" Foreground="#1F3B5B" Margin="0,0,0,20"/>
+
+                        <StackPanel Grid.Row="1" x:Name="pnlDetailsInhoud" Visibility="Collapsed">
+                            <!-- Dokter info -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                <Ellipse Width="50" Height="50" Stroke="#CBD5E1" StrokeThickness="1" Margin="0,0,15,0">
+                                    <Ellipse.Fill>
+                                        <ImageBrush x:Name="imgDetDokterFoto" Stretch="UniformToFill"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock x:Name="txtDetDokterNaam" Text="Dr. Naam" FontSize="16" FontWeight="Bold" Foreground="#1E293B"/>
+                                    <TextBlock x:Name="txtDetDokterEmail" Text="Email" FontSize="12" Foreground="#64748B"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Separator Background="#E2E8F0" Margin="0,0,0,15"/>
+
+                            <StackPanel Margin="0,0,0,15">
+                                <TextBlock Text="Datum &amp; Tijd" FontWeight="SemiBold" Foreground="#334155" FontSize="13" Margin="0,0,0,5"/>
+                                <TextBlock x:Name="txtDetMoment" Text="-" FontSize="15" FontWeight="Medium" Foreground="#1E293B"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="Reden voor consultatie" FontWeight="SemiBold" Foreground="#334155" FontSize="13" Margin="0,0,0,5"/>
+                                <Border Background="#F8FAFC" Padding="12" CornerRadius="6" BorderBrush="#E2E8F0" BorderThickness="1">
+                                    <TextBlock x:Name="txtDetKlacht" Text="-" FontSize="14" Foreground="#334155" TextWrapping="Wrap"/>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Geen selectie placeholder -->
+                        <TextBlock Grid.Row="1" x:Name="lblGeenSelectie" Text="Selecteer een afspraak uit de lijst om de details te bekijken." FontSize="14" Foreground="#94A3B8" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Margin="20,0"/>
+
+                        <!-- Annuleer knop -->
+                        <Button Grid.Row="2" x:Name="btnAnnuleren" Content="Afspraak Annuleren" Padding="15,10" Background="#E74C3C" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Visibility="Collapsed" Click="BtnAnnuleren_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- 2. NIEUWE AFSPRAAK PANEL -->
+            <Grid x:Name="pnlNieuw" Grid.Row="0" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Content="← Terug naar afspraken" HorizontalAlignment="Left" Padding="12,6" Margin="0,0,0,15" Background="#E2E8F0" Foreground="#334155" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" Click="BtnTerug_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1.2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Linker kolom: Dokter selectie en info -->
+                    <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="20" Margin="0,0,12,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="1. Kies uw dokter" FontSize="16" FontWeight="Bold" Foreground="#1F3B5B" Margin="0,0,0,15"/>
+                            
+                            <ComboBox x:Name="cmbDokters" Padding="8" FontSize="14" SelectionChanged="CmbDokters_SelectionChanged" BorderThickness="1" BorderBrush="#CBD5E1" Margin="0,0,0,15">
+                                <ComboBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="4"/>
+                                    </Style>
+                                </ComboBox.Resources>
+                            </ComboBox>
+
+                            <!-- Dokter preview kaart -->
+                            <Border x:Name="pnlDokterKaart" Background="#F8FAFC" CornerRadius="8" Padding="15" BorderBrush="#E2E8F0" BorderThickness="1" Visibility="Collapsed">
+                                <StackPanel>
+                                    <Ellipse Width="70" Height="70" Stroke="#CBD5E1" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,0,0,12">
+                                        <Ellipse.Fill>
+                                            <ImageBrush x:Name="imgKaartDokterFoto" Stretch="UniformToFill"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+
+                                    <TextBlock x:Name="txtKaartDokterNaam" Text="Dr. Voornaam Achternaam" FontSize="15" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                                    
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,4">
+                                            <TextBlock Text="RIZIV: " FontWeight="SemiBold" Foreground="#475569" FontSize="12"/>
+                                            <TextBlock x:Name="txtKaartRiziv" Text="-" Foreground="#64748B" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,4">
+                                            <TextBlock Text="Geconventioneerd: " FontWeight="SemiBold" Foreground="#475569" FontSize="12"/>
+                                            <TextBlock x:Name="txtKaartGeconventioneerd" Text="-" Foreground="#64748B" FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="E-mail: " FontWeight="SemiBold" Foreground="#475569" FontSize="12"/>
+                                            <TextBlock x:Name="txtKaartEmail" Text="-" Foreground="#64748B" FontSize="12"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Rechter kolom: Datum en Tijdslots -->
+                    <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="20" Margin="12,0,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="2. Kies datum &amp; tijd" FontSize="16" FontWeight="Bold" Foreground="#1F3B5B" Margin="0,0,0,15"/>
+                                
+                                <TextBlock Text="Datum:" FontWeight="SemiBold" Foreground="#334155" FontSize="13" Margin="0,0,0,5"/>
+                                <Calendar x:Name="calAfspraakDatum" Background="White" BorderBrush="#BDC3C7" BorderThickness="1" HorizontalAlignment="Left" Margin="0,0,0,15"/>
+
+                                <TextBlock Text="Beschikbare Tijdslots:" FontWeight="SemiBold" Foreground="#334155" FontSize="13" Margin="0,0,0,5"/>
+                                <ComboBox x:Name="cmbTijdslots" Padding="8" FontSize="14" BorderThickness="1" BorderBrush="#CBD5E1" Margin="0,0,0,15">
+                                    <ComboBox.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="4"/>
+                                        </Style>
+                                    </ComboBox.Resources>
+                                </ComboBox>
+
+                                <TextBlock Text="Reden voor afspraak:" FontWeight="SemiBold" Foreground="#334155" FontSize="13" Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtKlacht" Padding="8" FontSize="14" Height="70" TextWrapping="Wrap" AcceptsReturn="True" BorderThickness="1" BorderBrush="#CBD5E1" Margin="0,0,0,15">
+                                    <TextBox.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="4"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+
+                                <Button x:Name="btnBevestigen" Content="Afspraak Bevestigen" Padding="15,10" Background="#2ECC71" Foreground="White" FontWeight="Bold" FontSize="15" BorderThickness="0" Cursor="Hand" Click="BtnBevestigen_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <!-- Fout- en feedbackmeldingen onderaan -->
+            <TextBlock Grid.Row="1" x:Name="lblFoutmelding" Foreground="#E74C3C" FontWeight="Bold" Margin="0,15,0,0" TextWrapping="Wrap" FontSize="13"/>
+        </Grid>
+    </Grid>
+</Page>

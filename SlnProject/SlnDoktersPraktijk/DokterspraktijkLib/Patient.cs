@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -151,7 +151,22 @@ namespace DokterspraktijkLib
                                "profielfotodata = @Profielfotodata, notificaties = @Notificaties WHERE id = @Id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
-                VulParameters(cmd, true);
+
+                bool isAlGehashed = false;
+                if (Passwoord != null && Passwoord.Length == 64)
+                {
+                    isAlGehashed = true;
+                    foreach (char c in Passwoord)
+                    {
+                        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')))
+                        {
+                            isAlGehashed = false;
+                            break;
+                        }
+                    }
+                }
+
+                VulParameters(cmd, !isAlGehashed);
                 cmd.Parameters.AddWithValue("@Id", Id);
 
                 conn.Open();

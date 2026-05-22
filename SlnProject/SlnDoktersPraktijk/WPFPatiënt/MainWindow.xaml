@@ -1,31 +1,192 @@
-﻿<Window x:Class="WPFPatiënt.MainWindow"
+<Window x:Class="WPFPatiënt.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFPatiënt"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
-    <Grid >
-        <StackPanel VerticalAlignment ="Center" HorizontalAlignment="Center" Width="300">
-            <TextBlock Text="Mijn Portaal" FontSize="26" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-            <TextBlock Text=" Log in om u afspraak te beheren" FontSize="12" Foreground="#7F8C8D" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+        Title="Patiëntenportaal - Dokterspraktijk" 
+        Height="650" 
+        Width="1050"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7FA">
 
-            <TextBlock Text="Email adres" FontWeight="SemiBold"  Foreground="#34495E" Margin="0,0,0,5"/>
-            <TextBox x:Name="txtEmail" Padding="8" Margin="0,0,0,15" FontSize="14"/>
+    <Window.Resources>
+        <!-- Navigatieknop Stijl -->
+        <Style x:Key="NavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2C5282"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#4A5568"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <TextBlock Text="Wachtwoord" FontWeight="SemiBold" Foreground="#34495E" Margin="0,0,0,5"/>
-            <PasswordBox x:Name="pwdWachtwoord" Padding="8" Margin="0,0,0,25" FontSize="14"/>
+        <!-- Uitlogknop Stijl -->
+        <Style x:Key="LogoutButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C0392B"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Linker navigatie sidebar -->
+            <ColumnDefinition x:Name="colSidebar" Width="220"/>
+            <!-- Hoofdinhoud -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <Button x:Name ="btnLogin" Content="Inloggen" Background="#3498DB" Foreground="White" FontWeight="Bold" FontSize="16" Padding="10" Click="BtnLogin_Click">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+        <!-- Linker navigatie sidebar -->
+        <Border Grid.Column="0" 
+                x:Name="pnlSidebar"
+                Background="#1F3B5B" 
+                Padding="20"
+                Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <TextBlock x:Name="lblFoutmelding" Foreground="#E74C3C" HorizontalAlignment="Center" Margin="0,15,0,0" TextWrapping="Wrap" FontWeight="SemiBold"/>
-        </StackPanel>
+                <!-- Logo / Titel -->
+                <StackPanel Grid.Row="0" Margin="0,10,0,30">
+                    <TextBlock Text="Dokterspraktijk" 
+                               Foreground="#3498DB" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Patiëntenportaal" 
+                               Foreground="#94A3B8" 
+                               FontSize="12" 
+                               FontWeight="SemiBold" 
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Navigatie knoppen -->
+                <StackPanel Grid.Row="1">
+                    <Button x:Name="btnDashboard" 
+                            Content="Mijn Dashboard" 
+                            Style="{StaticResource NavigationButtonStyle}"
+                            Click="BtnDashboard_Click"/>
+                    
+                    <Button x:Name="btnAfspraken" 
+                            Content="Mijn Afspraken" 
+                            Style="{StaticResource NavigationButtonStyle}"
+                            Click="BtnAfspraken_Click"/>
+                    
+                    <Button x:Name="btnProfiel" 
+                            Content="Mijn Profiel" 
+                            Style="{StaticResource NavigationButtonStyle}"
+                            Click="BtnProfiel_Click"/>
+                </StackPanel>
+
+                <!-- Uitloggen onderaan -->
+                <Button Grid.Row="2" 
+                        x:Name="btnUitloggen" 
+                        Content="Uitloggen" 
+                        Style="{StaticResource LogoutButtonStyle}"
+                        Click="BtnUitloggen_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Rechter inhoudsgebied -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header rechtsboven (profielfoto en naam) -->
+            <Border Grid.Row="0"
+                    Background="White"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="0,0,0,1"
+                    Padding="15,10"
+                    x:Name="pnlHeader"
+                    Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock x:Name="lblPaginaTitel" 
+                               Text="Mijn Dashboard" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               Foreground="#1E293B" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtPatientNaam"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Foreground="#334155"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,12,0"/>
+                        <Ellipse Width="42" Height="42" Stroke="#E2E8F0" StrokeThickness="1">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="imgBrushProfielfoto" Stretch="UniformToFill"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Frame voor pagina's -->
+            <Frame x:Name="mainFrame"
+                   Grid.Row="1"
+                   NavigationUIVisibility="Hidden"/>
+        </Grid>
     </Grid>
 </Window>

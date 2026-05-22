@@ -3,17 +3,104 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Afspraken">
 
-    <Grid Background="#F5F7FA" Margin="20">
-        <StackPanel>
-            <TextBlock Text="Afspraken"
-                       FontSize="24"
-                       FontWeight="Bold"
-                       Foreground="#2C3E50"
-                       Margin="0,0,0,15"/>
+    <Grid Background="#F5F7FA">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <TextBlock Text="Hier komt het agenda-overzicht met Calendar control."
-                       TextWrapping="Wrap"
-                       Foreground="#7F8C8D"/>
-        </StackPanel>
+        <TextBlock Grid.Row="0" Text="Agenda en Afspraken"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Foreground="#2C3E50"
+                   Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Linker kolom: Datum kiezen -->
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock Text="Kies een datum:"
+                           FontWeight="SemiBold"
+                           Foreground="#34495E"
+                           Margin="0,0,0,8"
+                           FontSize="14"/>
+                <Calendar x:Name="calDatum"
+                          Background="White"
+                          BorderBrush="#BDC3C7"
+                          BorderThickness="1"/>
+            </StackPanel>
+
+            <!-- Rechter kolom: Afspraken -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           x:Name="lblGeselecteerdeDatum"
+                           Text="Selecteer een datum in de kalender"
+                           FontWeight="SemiBold"
+                           Foreground="#2C3E50"
+                           FontSize="16"
+                           Margin="0,0,0,10"/>
+
+                <ListBox Grid.Row="1" Grid.Column="0"
+                         x:Name="lstAfspraken"
+                         SelectionChanged="LstAfspraken_SelectionChanged"
+                         Background="White"
+                         BorderBrush="#BDC3C7"
+                         BorderThickness="1"
+                         FontSize="14"
+                         Padding="5"/>
+
+                <Button Grid.Row="1" Grid.Column="1"
+                        x:Name="btnAnnuleren"
+                        Content="Annuleren"
+                        Click="BtnAnnuleren_Click"
+                        Background="#E74C3C"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Padding="15,10"
+                        Margin="15,0,0,0"
+                        VerticalAlignment="Top"
+                        Height="40"/>
+
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,15,0,0">
+                    <TextBlock Text="Reden van consultatie:"
+                               FontWeight="Bold"
+                               Foreground="#34495E"
+                               Margin="0,0,0,5"/>
+                    <Border Background="#ECF0F1" Padding="10" CornerRadius="4">
+                        <TextBlock x:Name="txtReden"
+                                   Text="Geen afspraak geselecteerd"
+                                   TextWrapping="Wrap"
+                                   FontStyle="Italic"
+                                   Foreground="#7F8C8D"
+                                   MinHeight="40"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- Foutmeldingen onderaan -->
+        <TextBlock Grid.Row="2"
+                   x:Name="lblFoutmelding"
+                   Foreground="#E74C3C"
+                   FontWeight="SemiBold"
+                   Margin="0,15,0,0"
+                   TextWrapping="Wrap"/>
+        </Grid>
     </Grid>
 </Page>

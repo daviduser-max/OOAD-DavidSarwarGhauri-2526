@@ -1,13 +1,7 @@
-﻿using System.Text;
+using System;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DokterspraktijkLib;
 
 namespace WPFPatiënt
@@ -17,34 +11,110 @@ namespace WPFPatiënt
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Patient IngelogdePatient { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            ZetVoorUitgelogd();
         }
 
-        private void BtnLogin_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Deze methode wordt aangeroepen na een succesvolle login.
+        /// Het bouwt het portaal op voor de patiënt.
+        /// </summary>
+        public void NaInloggen(Patient patient)
         {
-            string email = txtEmail.Text.Trim();
-            string wachtwoord = pwdWachtwoord.Password;
+            IngelogdePatient = patient;
+            ZetVoorIngelogd();
+            UpdateProfielHeader();
+            
+            // Navigeer standaard naar het dashboard
+            lblPaginaTitel.Text = "Mijn Dashboard";
+            mainFrame.Navigate(new DashboardPage(IngelogdePatient));
+        }
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(wachtwoord))
-            {
-                lblFoutmelding.Text = "Gelieve alle velden in te vullen.";
-                return;
-            }
+        private void ZetVoorIngelogd()
+        {
+            pnlSidebar.Visibility = Visibility.Visible;
+            pnlHeader.Visibility = Visibility.Visible;
+            colSidebar.Width = new GridLength(220);
+        }
 
-            Patient ingelogdePatient = Patient.ValideerInloggen(email, wachtwoord);
-            if (ingelogdePatient != null)
+        private void ZetVoorUitgelogd()
+        {
+            IngelogdePatient = null;
+            pnlSidebar.Visibility = Visibility.Collapsed;
+            pnlHeader.Visibility = Visibility.Collapsed;
+            colSidebar.Width = new GridLength(0);
+            imgBrushProfielfoto.ImageSource = null;
+            txtPatientNaam.Text = "";
+            
+            // Navigeer terug naar login
+            mainFrame.Navigate(new LoginPage());
+        }
+
+        /// <summary>
+        /// Update de profielfoto en naam in de header.
+        /// </summary>
+        public void UpdateProfielHeader()
+        {
+            if (IngelogdePatient == null) return;
+
+            txtPatientNaam.Text = IngelogdePatient.VolledigeNaam;
+
+            if (IngelogdePatient.Profielfotodata != null && IngelogdePatient.Profielfotodata.Length > 0)
             {
-                lblFoutmelding.Text = "";
-                DashboardPage dashboard = new DashboardPage(ingelogdePatient);
-                this.Content = dashboard;
+                try
+                {
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.StreamSource = new MemoryStream(IngelogdePatient.Profielfotodata);
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    imgBrushProfielfoto.ImageSource = img;
+                }
+                catch
+                {
+                    imgBrushProfielfoto.ImageSource = null;
+                }
             }
             else
             {
-                lblFoutmelding.Text = "Ongelidge e-mailadres of wachtwoord";
+                imgBrushProfielfoto.ImageSource = null;
             }
+        }
 
+        private void BtnDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            if (IngelogdePatient != null)
+            {
+                lblPaginaTitel.Text = "Mijn Dashboard";
+                mainFrame.Navigate(new DashboardPage(IngelogdePatient));
+            }
+        }
+
+        private void BtnAfspraken_Click(object sender, RoutedEventArgs e)
+        {
+            if (IngelogdePatient != null)
+            {
+                lblPaginaTitel.Text = "Mijn Afspraken";
+                mainFrame.Navigate(new AfsprakenPage(IngelogdePatient));
+            }
+        }
+
+        private void BtnProfiel_Click(object sender, RoutedEventArgs e)
+        {
+            if (IngelogdePatient != null)
+            {
+                lblPaginaTitel.Text = "Mijn Profiel";
+                mainFrame.Navigate(new ProfielPage(IngelogdePatient));
+            }
+        }
+
+        private void BtnUitloggen_Click(object sender, RoutedEventArgs e)
+        {
+            ZetVoorUitgelogd();
         }
     }
 }

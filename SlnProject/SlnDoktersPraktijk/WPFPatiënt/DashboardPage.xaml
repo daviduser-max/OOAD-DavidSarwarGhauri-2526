@@ -1,62 +1,169 @@
-﻿<Page x:Class="WPFPatiënt.DashboardPage"
+<Page x:Class="WPFPatiënt.DashboardPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="450"
-      d:DesignWidth="800"
-      Title="DashboardPage">
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="Dashboard">
 
     <Grid Background="#F5F7FA">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Border Background="White"
-                CornerRadius="12"
-                Padding="30"
-                Margin="40">
+            <!-- Welkomstsectie -->
+            <Border Grid.Row="0" 
+                    Background="White" 
+                    CornerRadius="12" 
+                    Padding="25" 
+                    Margin="0,0,0,25"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="8" Color="#E2E8F0" Direction="270" ShadowDepth="2" Opacity="0.4"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <StackPanel>
+                    <Ellipse Grid.Column="0" Width="80" Height="80" Stroke="#CBD5E1" StrokeThickness="2" Margin="0,0,20,0">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="imgWelkomFoto" Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
 
-                <TextBlock Text="Mijn Dashboard"
-                           FontSize="32"
-                           FontWeight="Bold"
-                           Foreground="#1F3B5B"
-                           Margin="0,0,0,30"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtWelkomNaam" 
+                                   Text="Welkom terug, [Naam]!" 
+                                   FontSize="24" 
+                                   FontWeight="Bold" 
+                                   Foreground="#1F3B5B" 
+                                   Margin="0,0,0,6"/>
+                        <TextBlock Text="Beheer hier eenvoudig uw afspraken en gegevens." 
+                                   FontSize="14" 
+                                   Foreground="#64748B"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
 
-                <TextBlock Text="Naam"
-                           FontWeight="Bold"
-                           FontSize="16"/>
+            <!-- Statistieken en Snelkoppelingen -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="txtNaam"
-                           FontSize="18"
-                           Margin="0,0,0,20"/>
+                <!-- Linker kolom: Afspraak samenvatting -->
+                <Border Grid.Column="0" 
+                        Background="White" 
+                        CornerRadius="12" 
+                        Padding="25" 
+                        Margin="0,0,12,0"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" Color="#E2E8F0" Direction="270" ShadowDepth="2" Opacity="0.4"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="Uw Afspraken" 
+                                   FontSize="18" 
+                                   FontWeight="Bold" 
+                                   Foreground="#1F3B5B" 
+                                   Margin="0,0,0,20"/>
+                        
+                        <TextBlock Text="Aantal geplande afspraken:" 
+                                   FontSize="14" 
+                                   Foreground="#64748B" 
+                                   Margin="0,0,0,5"/>
+                        <TextBlock x:Name="txtAantalAfspraken" 
+                                   Text="0" 
+                                   FontSize="48" 
+                                   FontWeight="Bold" 
+                                   Foreground="#3498DB" 
+                                   Margin="0,0,0,25"/>
 
-                <TextBlock Text="Email"
-                           FontWeight="Bold"
-                           FontSize="16"/>
+                        <Button x:Name="btnBekijkAfspraken" 
+                                Content="Beheer Afspraken" 
+                                Padding="15,10" 
+                                Background="#3498DB" 
+                                Foreground="White" 
+                                FontWeight="Bold" 
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="BtnBekijkAfspraken_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </Border>
 
-                <TextBlock x:Name="txtEmail"
-                           FontSize="18"
-                           Margin="0,0,0,20"/>
+                <!-- Rechter kolom: Mijn Profiel & Snelkoppelingen -->
+                <Border Grid.Column="1" 
+                        Background="White" 
+                        CornerRadius="12" 
+                        Padding="25" 
+                        Margin="12,0,0,0"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" Color="#E2E8F0" Direction="270" ShadowDepth="2" Opacity="0.4"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                <TextBlock Text="GSM"
-                           FontWeight="Bold"
-                           FontSize="16"/>
+                        <TextBlock Grid.Row="0" 
+                                   Text="Mijn Profiel" 
+                                   FontSize="18" 
+                                   FontWeight="Bold" 
+                                   Foreground="#1F3B5B" 
+                                   Margin="0,0,0,20"/>
 
-                <TextBlock x:Name="txtGsm"
-                           FontSize="18"
-                           Margin="0,0,0,30"/>
+                        <StackPanel Grid.Row="1">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="E-mail: " FontWeight="SemiBold" Foreground="#334155" FontSize="14"/>
+                                <TextBlock x:Name="txtEmail" Text="-" Foreground="#64748B" FontSize="14"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="GSM: " FontWeight="SemiBold" Foreground="#334155" FontSize="14"/>
+                                <TextBlock x:Name="txtGsm" Text="-" Foreground="#64748B" FontSize="14"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Geboortedatum: " FontWeight="SemiBold" Foreground="#334155" FontSize="14"/>
+                                <TextBlock x:Name="txtGeboortedatum" Text="-" Foreground="#64748B" FontSize="14"/>
+                            </StackPanel>
+                        </StackPanel>
 
-                <Button Content="Uitloggen"
-                        Width="150"
-                        Height="40"
-                        Background="#3498DB"
-                        Foreground="White"
-                        FontWeight="Bold"/>
-
-            </StackPanel>
-
-        </Border>
-
+                        <Button Grid.Row="2" 
+                                x:Name="btnBekijkProfiel" 
+                                Content="Profiel Aanpassen" 
+                                Padding="15,10" 
+                                Background="#2ECC71" 
+                                Foreground="White" 
+                                FontWeight="Bold" 
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="BtnBekijkProfiel_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
