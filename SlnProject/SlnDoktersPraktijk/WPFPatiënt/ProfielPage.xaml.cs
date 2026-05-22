@@ -15,6 +15,7 @@ namespace WPFPatiënt
     {
         private Patient patient;
         private byte[] geselecteerdeFotoData;
+        private bool isBewerkenMode = false;
 
         public ProfielPage(Patient ingelogdePatient)
         {
@@ -24,9 +25,38 @@ namespace WPFPatiënt
             LaadPatientGegevens();
         }
 
+        /// <summary>
+        /// Schakelt de UI-elementen in of uit op basis van de bewerkingsmodus.
+        /// Dit zorgt voor een duidelijke scheiding tussen "profiel bekijken" (3.4.1) en "profiel bewerken" (3.4.2).
+        /// </summary>
+        private void UpdateMode()
+        {
+            // Tekstvelden read-only maken of bewerkbaar maken
+            txtVoornaam.IsReadOnly = !isBewerkenMode;
+            txtAchternaam.IsReadOnly = !isBewerkenMode;
+            dpGeboortedatum.IsEnabled = isBewerkenMode;
+            radMan.IsEnabled = isBewerkenMode;
+            radVrouw.IsEnabled = isBewerkenMode;
+            txtEmail.IsReadOnly = !isBewerkenMode;
+            txtGsm.IsReadOnly = !isBewerkenMode;
+            cmbNotificaties.IsEnabled = isBewerkenMode;
+            txtWachtwoord.IsReadOnly = !isBewerkenMode;
+
+            // Foto-upload/verwijderknoppen enkel tonen in bewerkmodus
+            btnUploadFoto.Visibility = isBewerkenMode ? Visibility.Visible : Visibility.Collapsed;
+            btnVerwijderFoto.Visibility = isBewerkenMode ? Visibility.Visible : Visibility.Collapsed;
+
+            // Knoppen onderaan tonen/verbergen
+            btnBewerken.Visibility = isBewerkenMode ? Visibility.Collapsed : Visibility.Visible;
+            btnAnnuleren.Visibility = isBewerkenMode ? Visibility.Visible : Visibility.Collapsed;
+            btnOpslaan.Visibility = isBewerkenMode ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void LaadPatientGegevens()
         {
             lblFoutmelding.Text = "";
+            isBewerkenMode = false;
+            UpdateMode();
             
             txtVoornaam.Text = patient.Voornaam;
             txtAchternaam.Text = patient.Achternaam;
@@ -189,8 +219,12 @@ namespace WPFPatiënt
                     lblFoutmelding.Foreground = System.Windows.Media.Brushes.Green;
                     lblFoutmelding.Text = "Uw gegevens zijn succesvol bijgewerkt!";
                     
-                    // Reset tekstkleur na 3 seconden is niet nodig, maar we herstellen het rood bij fouten
+                    // Reset tekstkleur
                     txtWachtwoord.Text = "";
+
+                    // Schakel terug naar bekijken-modus na succesvol opslaan (3.4.1)
+                    isBewerkenMode = false;
+                    UpdateMode();
                 }
                 else
                 {
@@ -203,6 +237,26 @@ namespace WPFPatiënt
                 lblFoutmelding.Foreground = System.Windows.Media.Brushes.Red;
                 lblFoutmelding.Text = "Fout bij opslaan: " + ex.Message;
             }
+        }
+
+        /// <summary>
+        /// Handelt de klik op de "Profiel Bewerken" knop af.
+        /// Schakelt over naar de bewerkmodus (3.4.2) waarbij de velden en uploadknoppen bewerkbaar worden.
+        /// </summary>
+        private void BtnBewerken_Click(object sender, RoutedEventArgs e)
+        {
+            lblFoutmelding.Text = "";
+            isBewerkenMode = true;
+            UpdateMode();
+        }
+
+        /// <summary>
+        /// Handelt de klik op de "Annuleren" knop af.
+        /// Reset alle onopgeslagen wijzigingen door de originele gegevens opnieuw in te laden (3.4.1).
+        /// </summary>
+        private void BtnAnnuleren_Click(object sender, RoutedEventArgs e)
+        {
+            LaadPatientGegevens();
         }
     }
 }

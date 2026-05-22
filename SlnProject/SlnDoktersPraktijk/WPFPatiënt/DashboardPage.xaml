@@ -43,10 +43,18 @@
                                    FontSize="24" 
                                    FontWeight="Bold" 
                                    Foreground="#1F3B5B" 
-                                   Margin="0,0,0,6"/>
-                        <TextBlock Text="Beheer hier eenvoudig uw afspraken en gegevens." 
+                                   Margin="0,0,0,8"/>
+                        
+                        <TextBlock Text="Over deze toepassing" 
+                                   FontWeight="Bold" 
                                    FontSize="14" 
-                                   Foreground="#64748B"/>
+                                   Foreground="#3498DB" 
+                                   Margin="0,0,0,4"/>
+                        <TextBlock Text="Met dit patiëntenportaal kunt u eenvoudig uw afspraken met onze artsen beheren. U kunt uw reeds geplande afspraken raadplegen, toekomstige consultaties annuleren en direct een nieuwe afspraak inboeken bij een dokter naar keuze door een gewenste datum, een vrij tijdsblok en de reden te selecteren. Tevens kunt u uw eigen profielgegevens beheren en uw profielfoto uploaden." 
+                                   FontSize="13" 
+                                   Foreground="#64748B" 
+                                   TextWrapping="Wrap"
+                                   LineHeight="18"/>
                     </StackPanel>
                 </Grid>
             </Border>

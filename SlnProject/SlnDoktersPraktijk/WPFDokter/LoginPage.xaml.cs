@@ -11,21 +11,29 @@ namespace WPFDokter
         public LoginPage()
         {
             InitializeComponent();
-            // Vooraf ingevuld om testen te vergemakkelijken (opdracht)
+            // Pre-filled to simplify testing (as per assignment)
             pwdWachtwoord.Password = "t9ZmRrAbSfCvk";
+        }
+
+        private void ZetFout(string bericht)
+        {
+            lblFoutmelding.Text = bericht;
+            foutBorder.Visibility = string.IsNullOrEmpty(bericht)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
 
         private void BtnInloggen_Click(object sender, RoutedEventArgs e)
         {
-            lblFoutmelding.Text = "";
+            ZetFout("");
 
-            string email = txtEmail.Text.Trim();
+            string email    = txtEmail.Text.Trim();
             string wachtwoord = pwdWachtwoord.Password;
 
-            // Formchecking
+            // Basic form validation
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(wachtwoord))
             {
-                lblFoutmelding.Text = "Gelieve e-mail en wachtwoord in te vullen.";
+                ZetFout("Gelieve e-mail en wachtwoord in te vullen.");
                 return;
             }
 
@@ -40,16 +48,16 @@ namespace WPFDokter
                 }
                 else
                 {
-                    lblFoutmelding.Text = "Ongeldig e-mailadres of wachtwoord.";
+                    ZetFout("Ongeldig e-mailadres of wachtwoord.");
                 }
             }
             catch (SqlException ex)
             {
-                lblFoutmelding.Text = "Databasefout: " + ex.Message;
+                ZetFout("Databasefout: " + ex.Message);
             }
             catch (Exception ex)
             {
-                lblFoutmelding.Text = "Fout bij inloggen: " + ex.Message;
+                ZetFout("Fout bij inloggen: " + ex.Message);
             }
         }
     }

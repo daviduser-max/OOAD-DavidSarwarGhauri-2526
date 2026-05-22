@@ -247,11 +247,11 @@ namespace DokterspraktijkLib
 
             if (Profielfotodata != null)
             {
-                cmd.Parameters.AddWithValue("@Profielfotodata", Profielfotodata);
+                cmd.Parameters.Add("@Profielfotodata", System.Data.SqlDbType.Image).Value = Profielfotodata;
             }
             else
             {
-                cmd.Parameters.AddWithValue("@Profielfotodata", DBNull.Value);
+                cmd.Parameters.Add("@Profielfotodata", System.Data.SqlDbType.Image).Value = DBNull.Value;
             }
         }
     }

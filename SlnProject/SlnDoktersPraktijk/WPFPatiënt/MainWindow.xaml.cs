@@ -19,19 +19,15 @@ namespace WPFPatiënt
             ZetVoorUitgelogd();
         }
 
-        /// <summary>
-        /// Deze methode wordt aangeroepen na een succesvolle login.
-        /// Het bouwt het portaal op voor de patiënt.
-        /// </summary>
         public void NaInloggen(Patient patient)
         {
             IngelogdePatient = patient;
             ZetVoorIngelogd();
             UpdateProfielHeader();
             
-            // Navigeer standaard naar het dashboard
-            lblPaginaTitel.Text = "Mijn Dashboard";
-            mainFrame.Navigate(new DashboardPage(IngelogdePatient));
+            // Navigeer standaard naar de afspraken pagina na succesvol inloggen (3.2)
+            lblPaginaTitel.Text = "Mijn Afspraken";
+            mainFrame.Navigate(new AfsprakenPage(IngelogdePatient));
         }
 
         private void ZetVoorIngelogd()

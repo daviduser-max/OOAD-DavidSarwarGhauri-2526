@@ -169,8 +169,7 @@
                                     </TextBox.Resources>
                                 </TextBox>
                             </Grid>
-
-                            <!-- Opslaan en feedback meldingen -->
+                            <!-- Knoppen en feedback meldingen -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -184,23 +183,62 @@
                                            VerticalAlignment="Center" 
                                            TextWrapping="Wrap"/>
                                 
-                                <Button Grid.Column="1" 
-                                        x:Name="btnOpslaan" 
-                                        Content="Gegevens Opslaan" 
-                                        Padding="20,10" 
-                                        Background="#2ECC71" 
-                                        Foreground="White" 
-                                        FontWeight="Bold" 
-                                        FontSize="15"
-                                        BorderThickness="0"
-                                        Cursor="Hand"
-                                        Click="BtnOpslaan_Click">
-                                    <Button.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="6"/>
-                                        </Style>
-                                    </Button.Resources>
-                                </Button>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <!-- Knop Bewerken (enkel in bekijken-modus) -->
+                                    <Button x:Name="btnBewerken" 
+                                            Content="Profiel Bewerken" 
+                                            Padding="20,10" 
+                                            Background="#3498DB" 
+                                            Foreground="White" 
+                                            FontWeight="Bold" 
+                                            FontSize="15"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            Click="BtnBewerken_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+
+                                    <!-- Knop Annuleren (enkel in bewerken-modus) -->
+                                    <Button x:Name="btnAnnuleren" 
+                                            Content="Annuleren" 
+                                            Padding="15,10" 
+                                            Background="#95A5A6" 
+                                            Foreground="White" 
+                                            FontWeight="Bold" 
+                                            FontSize="15"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            Margin="0,0,10,0"
+                                            Click="BtnAnnuleren_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+
+                                    <!-- Knop Opslaan (enkel in bewerken-modus) -->
+                                    <Button x:Name="btnOpslaan" 
+                                            Content="Gegevens Opslaan" 
+                                            Padding="20,10" 
+                                            Background="#2ECC71" 
+                                            Foreground="White" 
+                                            FontWeight="Bold" 
+                                            FontSize="15"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            Click="BtnOpslaan_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </StackPanel>
                             </Grid>
                         </StackPanel>
                     </Grid>

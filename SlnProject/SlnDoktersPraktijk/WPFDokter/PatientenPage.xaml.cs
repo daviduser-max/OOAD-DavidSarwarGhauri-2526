@@ -78,37 +78,43 @@ namespace WPFDokter
         private Border MaakPatientenKaart(Patient patient)
         {
             Border card = new Border();
-            card.Width = 280;
-            card.Height = 130;
+            card.Width = 300;
+            card.Height = 140;
             card.Margin = new Thickness(10);
             card.Background = Brushes.White;
             
             BrushConverter bc = new BrushConverter();
-            card.BorderBrush = (Brush)bc.ConvertFromString("#BDC3C7");
+            card.BorderBrush = (Brush)bc.ConvertFromString("#E2E8F0");
             card.BorderThickness = new Thickness(1);
-            card.CornerRadius = new CornerRadius(6);
+            card.CornerRadius = new CornerRadius(12);
 
-            // Subtiel schaduweffect voor een premium look
+            // Subtiel modern schaduweffect voor een premium look
             System.Windows.Media.Effects.DropShadowEffect shadow = new System.Windows.Media.Effects.DropShadowEffect();
-            shadow.Color = Colors.LightGray;
-            shadow.BlurRadius = 5;
-            shadow.ShadowDepth = 1;
-            shadow.Opacity = 0.5;
+            shadow.Color = (Color)ColorConverter.ConvertFromString("#CBD5E1");
+            shadow.BlurRadius = 8;
+            shadow.ShadowDepth = 2;
+            shadow.Opacity = 0.4;
             card.Effect = shadow;
 
             Grid cardGrid = new Grid();
-            cardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(90) });
+            cardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(95) });
             cardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             cardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(45) });
 
-            // Profielfoto (Kolom 0)
+            // Profielfoto Container (Kolom 0) - Cirkelvormig geknipt
+            Border photoBorder = new Border();
+            photoBorder.Width = 70;
+            photoBorder.Height = 70;
+            photoBorder.CornerRadius = new CornerRadius(35);
+            photoBorder.ClipToBounds = true;
+            photoBorder.BorderBrush = (Brush)bc.ConvertFromString("#CBD5E1");
+            photoBorder.BorderThickness = new Thickness(1);
+            photoBorder.HorizontalAlignment = HorizontalAlignment.Center;
+            photoBorder.VerticalAlignment = VerticalAlignment.Center;
+            photoBorder.Margin = new Thickness(10, 0, 5, 0);
+
             Image img = new Image();
-            img.Width = 80;
-            img.Height = 80;
-            img.Margin = new Thickness(5);
             img.Stretch = Stretch.UniformToFill;
-            img.VerticalAlignment = VerticalAlignment.Center;
-            img.HorizontalAlignment = HorizontalAlignment.Center;
 
             if (patient.Profielfotodata != null && patient.Profielfotodata.Length > 0)
             {
@@ -119,8 +125,9 @@ namespace WPFDokter
                 // Fallback naar een standaard placeholder
                 img.Source = new BitmapImage(new Uri("pack://application:,,,/WPFDokter;component/logo_odisee.png", UriKind.RelativeOrAbsolute));
             }
-            Grid.SetColumn(img, 0);
-            cardGrid.Children.Add(img);
+            photoBorder.Child = img;
+            Grid.SetColumn(photoBorder, 0);
+            cardGrid.Children.Add(photoBorder);
 
             // Informatie (Kolom 1)
             StackPanel infoPanel = new StackPanel();
@@ -131,14 +138,14 @@ namespace WPFDokter
             txtNaam.Text = patient.VolledigeNaam;
             txtNaam.FontWeight = FontWeights.Bold;
             txtNaam.FontSize = 14;
-            txtNaam.Foreground = (Brush)bc.ConvertFromString("#2C3E50");
+            txtNaam.Foreground = (Brush)bc.ConvertFromString("#1F3B5B");
             txtNaam.TextTrimming = TextTrimming.CharacterEllipsis;
             infoPanel.Children.Add(txtNaam);
 
             TextBlock txtEmail = new TextBlock();
             txtEmail.Text = patient.Email;
             txtEmail.FontSize = 11;
-            txtEmail.Foreground = Brushes.Gray;
+            txtEmail.Foreground = (Brush)bc.ConvertFromString("#64748B");
             txtEmail.Margin = new Thickness(0, 4, 0, 0);
             txtEmail.TextTrimming = TextTrimming.CharacterEllipsis;
             infoPanel.Children.Add(txtEmail);
@@ -146,7 +153,7 @@ namespace WPFDokter
             TextBlock txtGsm = new TextBlock();
             txtGsm.Text = string.IsNullOrEmpty(patient.Gsm) ? "Geen gsm" : patient.Gsm;
             txtGsm.FontSize = 11;
-            txtGsm.Foreground = Brushes.Gray;
+            txtGsm.Foreground = (Brush)bc.ConvertFromString("#64748B");
             txtGsm.Margin = new Thickness(0, 4, 0, 0);
             infoPanel.Children.Add(txtGsm);
 
@@ -157,37 +164,46 @@ namespace WPFDokter
             StackPanel btnPanel = new StackPanel();
             btnPanel.VerticalAlignment = VerticalAlignment.Center;
             btnPanel.HorizontalAlignment = HorizontalAlignment.Center;
+            btnPanel.Margin = new Thickness(0, 0, 8, 0);
 
             // Details knop (ℹ️)
             Button btnDetails = new Button();
             btnDetails.Content = "ℹ️";
             btnDetails.Tag = patient.Id;
-            btnDetails.Margin = new Thickness(0, 2, 0, 2);
-            btnDetails.Padding = new Thickness(5);
+            btnDetails.Margin = new Thickness(0, 3, 0, 3);
+            btnDetails.Padding = new Thickness(6);
             btnDetails.Click += BtnCardDetails_Click;
             btnDetails.ToolTip = "Patiënt Details";
+            btnDetails.Background = (Brush)bc.ConvertFromString("#EBF8FF");
+            btnDetails.BorderThickness = new Thickness(0);
+            btnDetails.Cursor = Cursors.Hand;
             btnPanel.Children.Add(btnDetails);
 
             // Wijzig knop (✏️)
             Button btnEdit = new Button();
             btnEdit.Content = "✏️";
             btnEdit.Tag = patient.Id;
-            btnEdit.Margin = new Thickness(0, 2, 0, 2);
-            btnEdit.Padding = new Thickness(5);
+            btnEdit.Margin = new Thickness(0, 3, 0, 3);
+            btnEdit.Padding = new Thickness(6);
             btnEdit.Click += BtnCardEdit_Click;
             btnEdit.ToolTip = "Patiënt Bewerken";
+            btnEdit.Background = (Brush)bc.ConvertFromString("#E6FFFA");
+            btnEdit.BorderThickness = new Thickness(0);
+            btnEdit.Cursor = Cursors.Hand;
             btnPanel.Children.Add(btnEdit);
 
             // Verwijder knop (🗑️)
             Button btnDelete = new Button();
             btnDelete.Content = "🗑️";
             btnDelete.Tag = patient.Id;
-            btnDelete.Margin = new Thickness(0, 2, 0, 2);
-            btnDelete.Padding = new Thickness(5);
+            btnDelete.Margin = new Thickness(0, 3, 0, 3);
+            btnDelete.Padding = new Thickness(6);
             btnDelete.Click += BtnCardDelete_Click;
             btnDelete.ToolTip = "Patiënt Verwijderen";
-            btnDelete.Background = Brushes.Tomato;
-            btnDelete.Foreground = Brushes.White;
+            btnDelete.Background = (Brush)bc.ConvertFromString("#FFF5F5");
+            btnDelete.Foreground = (Brush)bc.ConvertFromString("#E53E3E");
+            btnDelete.BorderThickness = new Thickness(0);
+            btnDelete.Cursor = Cursors.Hand;
             btnPanel.Children.Add(btnDelete);
 
             Grid.SetColumn(btnPanel, 2);
