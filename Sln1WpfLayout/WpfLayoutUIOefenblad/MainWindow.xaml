@@ -19,7 +19,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <ListBox x:Name="lstNav"
+                <ListBox x:Name="lonllive"
                          Grid.Row="0"
                          SelectionChanged="lstNav_SelectionChanged"
                          Margin="10"
@@ -27,15 +27,7 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="4">
-                                <TextBlock Text="{Binding Title}"
-                                           FontWeight="SemiBold"
-                                           FontSize="14"/>
-                                <TextBlock Text="{Binding Description}"
-                                           FontSize="11"
-                                           Foreground="Gray"
-                                           TextWrapping="Wrap"/>
-                            </StackPanel>
+                            
                         </DataTemplate>
                     </ListBox.ItemTemplate>
 

@@ -1,1 +1,4 @@
-<Solution />
+<Solution>
+  <Project Path="CLDierenarts/CLDierenarts.csproj" />
+  <Project Path="WpfDierenarts/WpfDierenarts.csproj" />
+</Solution>

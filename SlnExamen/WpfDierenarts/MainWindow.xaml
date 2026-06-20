@@ -1,0 +1,475 @@
+<Window x:Class="WpfDierenarts.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfDierenarts"
+        mc:Ignorable="d"
+        Title="Veterinaire Praktijk - Patiëntenbeheer" Height="700" Width="1100"
+        Background="#0f172a" FontFamily="Segoe UI, Inter" WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <!-- Modern ScrollViewer Style for dark theme -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+
+        <!-- Base Label Style -->
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#94a3b8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
+        </Style>
+
+        <!-- Modern Header TextBlock Style -->
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#14b8a6"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <!-- TextBlock for Labels inside Details -->
+        <Style x:Key="DetailLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#64748b"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,4,0,2"/>
+        </Style>
+
+        <!-- TextBlock for Values inside Details -->
+        <Style x:Key="DetailValueStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <!-- Modern TextBox Style -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#334155"/>
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="BorderBrush" Value="#475569"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,5,8,5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="CaretBrush" Value="#14b8a6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#14b8a6"/>
+                                <Setter TargetName="border" Property="Background" Value="#1e293b"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern ComboBox Style -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#334155"/>
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="BorderBrush" Value="#475569"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,5,8,5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <!-- Setting height or min-height for alignment -->
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+
+        <!-- Modern DatePicker Style -->
+        <Style TargetType="DatePicker">
+            <Setter Property="Background" Value="#334155"/>
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="BorderBrush" Value="#475569"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+
+        <!-- Implicit style for DatePickerTextBox to align with dark theme -->
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="4,0,4,0"/>
+        </Style>
+
+        <!-- CheckBox Style -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
+
+        <!-- Modern Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#14b8a6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="15,8,15,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0d9488"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0f766e"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#475569"/>
+                                <Setter Property="Foreground" Value="#94a3b8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Custom ListBox Style -->
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Background="{TemplateBinding Background}">
+                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Custom ListBoxItem Style -->
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#f8fafc"/>
+            <Setter Property="Padding" Value="10,8,10,8"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#334155"/>
+                                <Setter Property="Foreground" Value="#14b8a6"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#14b8a6"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Dashboard Panel Border Style -->
+        <Style x:Key="PanelBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.2*" MinWidth="350"/>
+            <ColumnDefinition Width="1.8*" MinWidth="500"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="8,0,8,10">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Width="12" Height="12" Fill="#14b8a6" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="DIERENARTSPRAKTIJK DE VRIEND" Foreground="White" FontSize="20" FontWeight="ExtraBold" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- LEFT COLUMN: FILTERS & LIST -->
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- FILTERS PANEL (Top Left) -->
+            <Border Style="{StaticResource PanelBorderStyle}" Grid.Row="0">
+                <StackPanel>
+                    <TextBlock Text="Filters" Style="{StaticResource HeaderStyle}"/>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                            <Label Content="Eigenaar" Target="{Binding ElementName=cmbFilterOwner}"/>
+                            <ComboBox x:Name="cmbFilterOwner" SelectionChanged="Filter_Changed"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                            <Label Content="Urgentie" Target="{Binding ElementName=cmbFilterUrgency}"/>
+                            <ComboBox x:Name="cmbFilterUrgency" SelectionChanged="Filter_Changed"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <CheckBox x:Name="chkFilterAdmitted" Content="Alleen opgenomen dieren" Margin="0,12,0,0" Checked="Filter_Changed" Unchecked="Filter_Changed"/>
+                </StackPanel>
+            </Border>
+
+            <!-- OVERVIEW PANEL (Bottom Left) -->
+            <Border Style="{StaticResource PanelBorderStyle}" Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Patiëntenoverzicht" Style="{StaticResource HeaderStyle}" Grid.Row="0"/>
+                    
+                    <ListBox x:Name="lbxAnimals" Grid.Row="1" SelectionChanged="LbxAnimals_SelectionChanged"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- RIGHT COLUMN: DETAILS & ADD FORM -->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.1*"/>
+                <RowDefinition Height="0.9*"/>
+            </Grid.RowDefinitions>
+
+            <!-- DETAILS PANEL (Top Right) -->
+            <Border Style="{StaticResource PanelBorderStyle}" Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Patiënt Details" Style="{StaticResource HeaderStyle}" Grid.Row="0"/>
+
+                    <!-- Scrollable Details Content -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10">
+                        <Grid x:Name="gridDetails" Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="IDENTIFICATIE" Foreground="#14b8a6" FontSize="11" FontWeight="Bold" Margin="0,5,0,5"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                        <TextBlock Text="ID" Style="{StaticResource DetailLabelStyle}"/>
+                                        <TextBlock x:Name="txtDetailId" Style="{StaticResource DetailValueStyle}" FontWeight="Bold"/>
+                                        
+                                        <TextBlock Text="Naam" Style="{StaticResource DetailLabelStyle}"/>
+                                        <TextBlock x:Name="txtDetailName" Style="{StaticResource DetailValueStyle}" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Type" Style="{StaticResource DetailLabelStyle}"/>
+                                        <TextBlock x:Name="txtDetailType" Style="{StaticResource DetailValueStyle}"/>
+                                        
+                                        <TextBlock Text="Urgentie" Style="{StaticResource DetailLabelStyle}"/>
+                                        <TextBlock x:Name="txtDetailUrgency" Style="{StaticResource DetailValueStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border BorderBrush="#334155" BorderThickness="0,1,0,0" Margin="0,5,0,5"/>
+
+                                <TextBlock Text="MEDISCH &amp; STATISTIEK" Foreground="#14b8a6" FontSize="11" FontWeight="Bold" Margin="0,5,0,5"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Geboortedatum" Style="{StaticResource DetailLabelStyle}"/>
+                                        <TextBlock x:Name="txtDetailBirthdate" Style="{StaticResource DetailValueStyle}"/>
+                                        
+                                        <TextBlock Text="Gewicht" Style="{StaticResource DetailLabelStyle}"/>
+                                        <TextBlock x:Name="txtDetailWeight" Style="{StaticResource DetailValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <!-- Dynamic properties (breed / vaccinated) -->
+                                        <StackPanel x:Name="spDetailBreed" Visibility="Collapsed">
+                                            <TextBlock Text="Ras" Style="{StaticResource DetailLabelStyle}"/>
+                                            <TextBlock x:Name="txtDetailBreed" Style="{StaticResource DetailValueStyle}"/>
+                                        </StackPanel>
+                                        <StackPanel x:Name="spDetailVaccinated" Visibility="Collapsed">
+                                            <TextBlock Text="Gevaccineerd" Style="{StaticResource DetailLabelStyle}"/>
+                                            <TextBlock x:Name="txtDetailVaccinated" Style="{StaticResource DetailValueStyle}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border BorderBrush="#334155" BorderThickness="0,1,0,0" Margin="0,5,0,5"/>
+
+                                <TextBlock Text="EIGENAAR &amp; OPNAME" Foreground="#14b8a6" FontSize="11" FontWeight="Bold" Margin="0,5,0,5"/>
+                                <TextBlock Text="Eigenaar" Style="{StaticResource DetailLabelStyle}"/>
+                                <TextBlock x:Name="txtDetailOwner" Style="{StaticResource DetailValueStyle}"/>
+                                
+                                <TextBlock Text="Opnamestatus" Style="{StaticResource DetailLabelStyle}"/>
+                                <TextBlock x:Name="txtDetailAdmitted" Style="{StaticResource DetailValueStyle}"/>
+                            </StackPanel>
+
+                            <!-- Avatar image right side -->
+                            <Border Grid.Column="1" Width="140" Height="140" Background="#334155" CornerRadius="10" VerticalAlignment="Top" BorderBrush="#475569" BorderThickness="1" Padding="5">
+                                <Image x:Name="imgAvatar" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- Text displayed when no animal is selected -->
+                    <TextBlock x:Name="txtNoSelection" Grid.Row="1" Text="Selecteer een patiënt uit het overzicht om de details te bekijken." 
+                               Foreground="#64748b" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Style="{x:Null}"/>
+
+                    <!-- Admit Button -->
+                    <Button x:Name="btnAdmit" Grid.Row="2" Content="Dier Opnemen" HorizontalAlignment="Right" Click="BtnAdmit_Click" IsEnabled="False"/>
+                </Grid>
+            </Border>
+
+            <!-- REGISTRATION PANEL (Bottom Right) -->
+            <Border Style="{StaticResource PanelBorderStyle}" Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Nieuwe Patiënt Registreren" Style="{StaticResource HeaderStyle}" Grid.Row="0"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Left inputs -->
+                            <StackPanel Grid.Column="0" Margin="0,0,8,12" Grid.Row="0">
+                                <Label Content="Naam" Target="{Binding ElementName=txtRegName}"/>
+                                <TextBox x:Name="txtRegName"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,12" Grid.Row="1">
+                                <Label Content="Eigenaar" Target="{Binding ElementName=cmbRegOwner}"/>
+                                <ComboBox x:Name="cmbRegOwner"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,12" Grid.Row="2">
+                                <Label Content="Geboortedatum" Target="{Binding ElementName=dpRegBirthdate}"/>
+                                <DatePicker x:Name="dpRegBirthdate"/>
+                            </StackPanel>
+
+                            <!-- Right inputs -->
+                            <StackPanel Grid.Column="1" Margin="8,0,0,12" Grid.Row="0">
+                                <Label Content="Gewicht (kg)" Target="{Binding ElementName=txtRegWeight}"/>
+                                <TextBox x:Name="txtRegWeight"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,12" Grid.Row="1">
+                                <Label Content="Urgentie" Target="{Binding ElementName=cmbRegUrgency}"/>
+                                <ComboBox x:Name="cmbRegUrgency"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,12" Grid.Row="2">
+                                <Label Content="Type Dier" Target="{Binding ElementName=cmbRegType}"/>
+                                <ComboBox x:Name="cmbRegType" SelectionChanged="CmbRegType_SelectionChanged"/>
+                            </StackPanel>
+
+                            <!-- Row 3: Dynamic Inputs span both columns -->
+                            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,5,0,5">
+                                <!-- Dynamic breed box (Hond) -->
+                                <StackPanel x:Name="spRegBreedField" Visibility="Collapsed">
+                                    <Label Content="Ras (Hond)" Target="{Binding ElementName=txtRegBreed}"/>
+                                    <TextBox x:Name="txtRegBreed"/>
+                                </StackPanel>
+                                
+                                <!-- Dynamic vaccinated box (Kat) -->
+                                <StackPanel x:Name="spRegVaccinatedField" Visibility="Collapsed">
+                                    <CheckBox x:Name="chkRegVaccinated" Content="Dier is volledig gevaccineerd" Margin="0,15,0,5"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Row 4: Submit Button & Error messages -->
+                            <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Error message display -->
+                                <TextBlock x:Name="txtRegError" Grid.Column="0" TextWrapping="Wrap" Foreground="#f87171" 
+                                           FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                <Button x:Name="btnRegister" Grid.Column="1" Content="Registreren" Click="BtnRegister_Click" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
